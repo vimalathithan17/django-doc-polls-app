@@ -16,4 +16,6 @@ urlpatterns = [
     path("<int:pk>/", views.DetailView.as_view(), name="detail"),
     path("<int:pk>/results/", views.ResultsView.as_view(), name="results"),
     path("<int:question_id>/vote/", views.vote, name="vote"),
+    path("form/",views.form_req,name="form_url"),
+    path("test_api/",views.test_api,name='t_api'),
 ]

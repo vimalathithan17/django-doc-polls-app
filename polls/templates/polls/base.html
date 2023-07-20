@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>polls</title>
+</head>
+<body>
+    <nav>
+
+        {%if request.path != '/polls/'%}
+        <a href="{%url 'polls:index'%}">home</a>
+        {%endif%}
+        {%if user.is_authenticated %}
+        <a href="{%url 'logout'%}">logout</a>
+        <a href="{%url 'profile'%}">profile</a>
+        {%else%}
+        <a href="{%url 'register'%}">register</a>
+        <a href="{%url 'login'%}">login</a>
+        {%endif%}
+        
+        
+    </nav>
+        <div style="background-color: yellowgreen;color: black;">
+            {% include 'polls/messages.html'%}
+        </div>
+    
+    {% block content %}
+    {%endblock content%}
+</body>
+</html>
