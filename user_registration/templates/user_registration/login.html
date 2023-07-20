@@ -1,0 +1,18 @@
+{%extends 'polls/base.html' %}
+{% block content%}
+<form action="" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <legend>login</legend>
+        {{form.as_p}}
+    </fieldset>
+    <input type="submit" value="login">
+</form>
+<div style="padding-top: 2rem;">
+    <small>
+       need an account? <a href="{%url 'register'%}">sign up</a>
+       <br>
+       <a href="{%url 'password_reset' %}">forgot password?</a>
+    </small>
+</div>
+{%endblock content%}

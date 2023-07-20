@@ -1,0 +1,12 @@
+{%extends 'polls/base.html' %}
+{% block content%}
+<div>
+    <img src="{{user.personaldetails.profile_image.url}}" alt="">
+</div>
+<p>{{user.username}}</p>
+<p>{{user.email}}</p>
+<p>{{user.personaldetails.blood_group}}</p>
+<p>{{user.personaldetails.age}}</p>
+<a href="{% url 'edit' %}">edit profile</a>
+<a href="{%url 'password_reset' %}">change password</a>
+{%endblock content%}

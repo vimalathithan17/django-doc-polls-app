@@ -5,8 +5,12 @@ name = "pypi"
 
 [packages]
 django = "*"
+requests = "*"
+pillow = "*"
+six = "*"
 
 [dev-packages]
+pre-commit = "*"
 
 [requires]
 python_version = "3.11"

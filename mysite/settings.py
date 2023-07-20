@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 import os
-SECRET_KEY = os.environ['SECRET_KEY']#'django-insecure-q8bh#cdh@k=10(y18!77i@1pne7^a*hbary=wj+%^zi*7+4si6'
+SECRET_KEY ='django-insecure-q8bh#cdh@k=10(y18!77i@1pne7^a*hbary=wj+%^zi*7+4si6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ['DEBUG']
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'polls.apps.PollsConfig',
+    'user_registration.apps.UserRegistrationConfig',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,15 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+MEDIA_ROOT=os.path.join(BASE_DIR,'media')
+MEDIA_URL='/media/'
+LOGIN_REDIRECT_URL='polls:index'
+LOGIN_URL='login'#for login dec to know
+
+EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER='kakashi3717@gmail.com'
+EMAIL_HOST_PASSWORD='ymwkrdmqbuppiutz'
+PASSWORD_RESET_TIMEOUT=14400

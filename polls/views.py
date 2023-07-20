@@ -1,11 +1,64 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,HttpResponse,JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from .models import Choice, Question
-
-
+import requests
+import json
+def test_api(request):
+    qns=Question.objects.all()[:3]
+    qt=dict()
+    i=0
+    for q in qns:
+        print(type(q.question_text))
+        qt[i]=q.question_text
+        i+=1
+    print(type(qt))
+    qt=json.dumps(qt)
+    print('type',type(qt))
+    res=requests.get("http://127.0.0.1:8000/api/?qns={}".format(qt))
+    #print(res)
+    print(qt)
+    print(type(res.json()))
+    result=json.loads(res.json())
+    print(type(result))
+    return HttpResponse(result["what's up?"])
+    #return HttpResponse(res.json().values())
+def form_req(request):
+    template='polls/forms.html'
+    content={'val':'he','questions':None}
+    if request.method=='GET':
+        print("in get :")
+        return render(request,template,content)
+    print(request.method)
+    if request.method == 'POST':
+        print("in post :")
+        content['val']=request.POST['the choice']
+        content['questions']=Question.objects.filter(choice__choice_text=content['val'])
+        print(content["questions"])
+        res=requests.get('https://api.geoapify.com/v1/geocode/search?city={}&format=json&apiKey=d0f637b5187e487196dd3d9504742ecf'.format(content['val']))
+        dict_res=res.json()
+        '''print(dict_res.keys(),dict_res)
+        for key in dict_res.keys():
+            print(type(dict_res[key]))
+        for data in dict_res['results'][0]:
+            print(data,'\n',type(data))'''
+        lat=dict_res['results'][0]['lat']
+        lon=dict_res['results'][0]['lon']
+        print(lat,lon)
+        return render(request,template,content)
+        '''print(type(request.POST),'req')
+        res=request.POST
+        key=res.keys()
+        value=res.values()
+        res=dict(zip(list(res.keys())[1:],list(res.values())[1:]))
+        return JsonResponse(res)
+        print(json.dumps(request))
+        print(request.POST)
+        return HttpResponse(f"jghyu{json.dumps(request.POST)}")'''
+        
+    #return render(request,'polls/forms.html')
 class IndexView(generic.ListView):
     template_name = "polls/index.html"
     context_object_name = "latest_question_list"

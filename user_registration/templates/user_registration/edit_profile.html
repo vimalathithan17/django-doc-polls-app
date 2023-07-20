@@ -1,0 +1,20 @@
+{%extends 'polls/base.html' %}
+{% block content%}
+<form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+        <legend>edit profile</legend>
+        {{u_form.as_p}}
+        <h2>Details</h2>
+        <p>Age:{{p_form.age}}</p>
+        <p>blood group:{{p_form.blood_group}}</p>
+        <p>prifile pic:{{p_form.profile_image}}</p>
+    </fieldset>
+    <input type="submit" value="save">
+</form>
+<div style="padding-top: 2rem;">
+    <small>
+    <a href="{%url 'profile'%}">cancel</a>
+    </small>
+</div>
+{%endblock content%}
