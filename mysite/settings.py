@@ -136,3 +136,4 @@ EMAIL_USE_TLS=True
 EMAIL_HOST_USER='kakashi3717@gmail.com'
 EMAIL_HOST_PASSWORD='ymwkrdmqbuppiutz'
 PASSWORD_RESET_TIMEOUT=14400
+AUTHENTICATION_BACKENDS = ['user_registration.backends.EmailBackend']

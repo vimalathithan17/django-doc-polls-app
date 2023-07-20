@@ -1,6 +1,9 @@
+from .handler import handle_uploaded_file
+from PIL import Image
+from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.forms import UserCreationForm
-from .forms import PresonalDetailsForm,UserRegistrationForm,UserUpdateForm,ProfileUpdateForm
+from .forms import PresonalDetailsForm,UserRegistrationForm,UserUpdateForm,ProfileUpdateForm,UserLoginForm,TestForm
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .models import PersonalDetails
@@ -9,7 +12,6 @@ from django.contrib.auth import login, logout, authenticate, get_user_model
 # Create your views here.
 from .decorators import user_not_authenticated
 from django.contrib.auth.forms import AuthenticationForm
-
 from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -157,7 +159,7 @@ def profile_pg(request):
 @user_not_authenticated
 def custom_login(request):
     if request.method == 'POST':
-        form=AuthenticationForm(request=request,data=request.POST)
+        form=UserLoginForm(request=request,data=request.POST)
         if form.is_valid():
             user=authenticate(username=form.cleaned_data['username'],
                           password=form.cleaned_data['password'])
@@ -171,7 +173,7 @@ def custom_login(request):
         else:
             for error in list(form.errors.values()):
                 messages.error(request,error)
-    form=AuthenticationForm()
+    form=UserLoginForm()
     return render(request,'user_registration/login.html',{'form':form})
 @login_required
 def custom_logout(request):
@@ -187,6 +189,7 @@ def edit_profile(request):
                                    request.FILES,
                                    instance=request.user.personaldetails)
         print(request.POST,u_form.is_valid(), p_form.is_valid())
+        print(request.FILES)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -196,3 +199,23 @@ def edit_profile(request):
         u_form=UserUpdateForm(instance=request.user)
         p_form=ProfileUpdateForm(instance=request.user.personaldetails)
     return render(request,'user_registration/edit_profile.html',{'u_form':u_form,'p_form':p_form})
+
+def image_(request):
+    form=TestForm()
+    if request.method=='POST':
+        print('jkjnkhjn',request.FILES['image'])
+        form=TestForm(request.POST,request.FILES)
+        print(form.is_valid())
+        a=form.cleaned_data['image']
+        '''print(a.path)'''
+        '''img=Image.open(a)
+        print(img.getdata)'''
+        if form.is_valid():
+            path=handle_uploaded_file(request.FILES['image'])
+            mail_subject = "hoiii"
+        email = EmailMessage(mail_subject,'imageeeee', to=[request.user.email])
+        email.attach_file(f"/media/prescription/{path}")
+        email.send()
+        return redirect('polls:index')
+
+    return render(request,'user_registration/image_form.html',{'form':form})
